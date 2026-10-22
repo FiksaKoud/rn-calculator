@@ -5,16 +5,16 @@ import { Dimensions, StyleSheet, View } from 'react-native';
 import Animated, { Easing, Keyframe } from 'react-native-reanimated';
 import { scheduleOnRN } from 'react-native-worklets';
 
-const INITIAL_SCALE_FACTOR = Dimensions.get('screen').height / 90;
-const DURATION = 600;
+const FACTOR_ESCALA_INICIAL = Dimensions.get('screen').height / 90;
+const DURACION = 600;
 
-export function AnimatedSplashOverlay() {
-  const [animate, setAnimate] = useState(false);
-  const [visible, setVisible] = useState(true);
+export function CapaInicioAnimada() {
+  const [animar, establecerAnimacion] = useState(false);
+  const [visible, establecerVisibilidad] = useState(true);
 
   if (!visible) return null;
 
-  const splashKeyframe = new Keyframe({
+  const fotogramaInicio = new Keyframe({
     0: {
       transform: [{ scale: 1 }],
       opacity: 1,
@@ -33,35 +33,35 @@ export function AnimatedSplashOverlay() {
     },
   });
 
-  const image = <Image style={styles.image} source={require('@/assets/images/expo-logo.png')} />;
+  const imagen = <Image style={estilos.imagen} source={require('@/assets/images/expo-logo.png')} />;
 
-  return animate ? (
+  return animar ? (
     <Animated.View
-      entering={splashKeyframe.duration(DURATION).withCallback((finished) => {
+      entering={fotogramaInicio.duration(DURACION).withCallback((terminado) => {
         'worklet';
-        if (finished) {
-          scheduleOnRN(setVisible, false);
+        if (terminado) {
+          scheduleOnRN(establecerVisibilidad, false);
         }
       })}
-      style={styles.splashOverlay}>
-      {image}
+      style={estilos.capaInicio}>
+      {imagen}
     </Animated.View>
   ) : (
     <View
       onLayout={() => {
         SplashScreen.hideAsync().finally(() => {
-          setAnimate(true);
+          establecerAnimacion(true);
         });
       }}
-      style={styles.splashOverlay}>
-      {image}
+      style={estilos.capaInicio}>
+      {imagen}
     </View>
   );
 }
 
-const keyframe = new Keyframe({
+const fotograma = new Keyframe({
   0: {
-    transform: [{ scale: INITIAL_SCALE_FACTOR }],
+    transform: [{ scale: FACTOR_ESCALA_INICIAL }],
   },
   100: {
     transform: [{ scale: 1 }],
@@ -69,7 +69,7 @@ const keyframe = new Keyframe({
   },
 });
 
-const logoKeyframe = new Keyframe({
+const fotogramaLogo = new Keyframe({
   0: {
     transform: [{ scale: 1.3 }],
     opacity: 0,
@@ -86,7 +86,7 @@ const logoKeyframe = new Keyframe({
   },
 });
 
-const glowKeyframe = new Keyframe({
+const fotogramaBrillo = new Keyframe({
   0: {
     transform: [{ rotateZ: '0deg' }],
   },
@@ -95,50 +95,50 @@ const glowKeyframe = new Keyframe({
   },
 });
 
-export function AnimatedIcon() {
+export function IconoAnimado() {
   return (
-    <View style={styles.iconContainer}>
-      <Animated.View entering={glowKeyframe.duration(60 * 1000 * 4)} style={styles.glow}>
-        <Image style={styles.glow} source={require('@/assets/images/logo-glow.png')} />
+    <View style={estilos.contenedorIcono}>
+      <Animated.View entering={fotogramaBrillo.duration(60 * 1000 * 4)} style={estilos.brillo}>
+        <Image style={estilos.brillo} source={require('@/assets/images/logo-glow.png')} />
       </Animated.View>
 
-      <Animated.View entering={keyframe.duration(DURATION)} style={styles.background} />
-      <Animated.View style={styles.imageContainer} entering={logoKeyframe.duration(DURATION)}>
-        <Image style={styles.image} source={require('@/assets/images/expo-logo.png')} />
+      <Animated.View entering={fotograma.duration(DURACION)} style={estilos.fondo} />
+      <Animated.View style={estilos.contenedorImagen} entering={fotogramaLogo.duration(DURACION)}>
+        <Image style={estilos.imagen} source={require('@/assets/images/expo-logo.png')} />
       </Animated.View>
     </View>
   );
 }
 
-const styles = StyleSheet.create({
-  imageContainer: {
+const estilos = StyleSheet.create({
+  contenedorImagen: {
     justifyContent: 'center',
     alignItems: 'center',
   },
-  glow: {
+  brillo: {
     width: 201,
     height: 201,
     position: 'absolute',
   },
-  iconContainer: {
+  contenedorIcono: {
     justifyContent: 'center',
     alignItems: 'center',
     width: 128,
     height: 128,
     zIndex: 100,
   },
-  image: {
+  imagen: {
     width: 76,
     height: 71,
   },
-  background: {
+  fondo: {
     borderRadius: 40,
     experimental_backgroundImage: `linear-gradient(180deg, #3C9FFE, #0274DF)`,
     width: 128,
     height: 128,
     position: 'absolute',
   },
-  splashOverlay: {
+  capaInicio: {
     ...StyleSheet.absoluteFill,
     backgroundColor: '#208AEF',
     alignItems: 'center',

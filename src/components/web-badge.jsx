@@ -2,41 +2,41 @@ import { version } from 'expo/package.json';
 import { Image } from 'expo-image';
 import { useColorScheme, StyleSheet } from 'react-native';
 
-import { ThemedText } from './themed-text';
-import { ThemedView } from './themed-view';
+import { TextoTematico } from './themed-text';
+import { VistaTematica } from './themed-view';
 
 import { Spacing } from '@/constants/theme';
 
-export function WebBadge() {
-  const scheme = useColorScheme();
+export function InsigniaWeb() {
+  const esquema = useColorScheme();
 
   return (
-    <ThemedView style={styles.container}>
-      <ThemedText type="code" themeColor="textSecondary" style={styles.versionText}>
+    <VistaTematica style={estilos.contenedor}>
+      <TextoTematico tipo="codigo" colorTema="textSecondary" style={estilos.textoVersion}>
         v{version}
-      </ThemedText>
+      </TextoTematico>
       <Image
         source={
-          scheme === 'dark'
+          esquema === 'dark'
             ? require('@/assets/images/expo-badge-white.png')
             : require('@/assets/images/expo-badge.png')
         }
-        style={styles.badgeImage}
+        style={estilos.imagenInsignia}
       />
-    </ThemedView>
+    </VistaTematica>
   );
 }
 
-const styles = StyleSheet.create({
-  container: {
+const estilos = StyleSheet.create({
+  contenedor: {
     padding: Spacing.five,
     alignItems: 'center',
     gap: Spacing.two,
   },
-  versionText: {
+  textoVersion: {
     textAlign: 'center',
   },
-  badgeImage: {
+  imagenInsignia: {
     width: 123,
     aspectRatio: 123 / 24,
   },
